@@ -49,10 +49,10 @@ track_iphone()
   guest_status='not_home'
   guest_lastseen=0
 
-  while true; do sleep 12
-    # Send config message on Birth and Last Will and Testaments in the background
-    MQTT_LWT_config "$NAME" "$PRETTYNAME" &
+  # Send config message on Birth and Last Will and Testaments in the background
+  MQTT_LWT_config "$NAME" "$PRETTYNAME" &
 
+  while true; do sleep 12
     # IP
     hping3 -2 -c 3 -p 5353 "$IP" -q >/dev/null 2>&1
     if ip neigh show | grep REACHABLE | grep -q "$IP "; then
