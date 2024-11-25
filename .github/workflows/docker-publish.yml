@@ -1,8 +1,10 @@
 name: Docker-build-n-push
 
 on:
-  push:
-    tags: [ 'v*.*.*' ]
+#  push:
+#    tags: [ 'v*.*.*' ]
+  release:
+    types: [published]
 
 jobs:
   build-and-push-image:
@@ -36,7 +38,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: .
-          push: true
+          push: ${{ github.event.action == 'release' }}
           platforms: ${{ matrix.platforms }}
           tags: ghcr.io/${{ env.REPO }}:latest
           build-args: |
