@@ -13,7 +13,7 @@ send_discovery()
   NAME="$1"
   PRETTYNAME="$2"
   # DEBUG
-  echo "$(date): Sending discorery message"
+  echo "$(date): Sending discovery message"
   mosquitto_pub -h "$MQTT_IP" -p "$MQTT_PORT" -u "$MQTT_USER" -P "$MQTT_PASSWORD" \
    -t "${MQTT_HA_TOPIC_PREFIX}/device_tracker/${NAME}/config" \
    -m '{"state_topic": "${MQTT_HA_TOPIC_PREFIX}/device_tracker/'"${NAME}"'/state", "name": "'"${PRETTYNAME}"'", "payload_home": "home", "payload_not_home": "not_home", "source_type": "router"}'
