@@ -7,6 +7,14 @@ on:
 jobs:
   build-and-push-image:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        platform:
+          - linux/amd64
+          - linux/arm/v6
+          - linux/arm/v7
+          - linux/arm64
     permissions:
       packages: write
     steps:
@@ -29,8 +37,10 @@ jobs:
         with:
           context: .
           push: true
+          platforms: ${{ matrix.platforms }}
           tags: ghcr.io/${{ env.REPO }}:latest
           build-args: |
             BUILD_DATE=${{ github.event.repository.updated_at }}
             BUILD_REF=$(git rev-parse --short HEAD)
             BUILD_VERSION=${{ github.ref_name }}
+          outputs: type=image,name=target,annotation-index.org.opencontainers.image.description="Track iPhones, or any device using Bonjour protocol, on the local network for Home Assistant."
