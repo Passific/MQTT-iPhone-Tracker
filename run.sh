@@ -1,8 +1,9 @@
 #!/bin/sh
-# This script track iPhones (or Apple devices) on the local network,
+# This script track iPhones (or any devices using Bonjour protocol) on the local network,
 # and report the status to MQTT for Home assistant to use
 
-CONSIDER_HOME=${CONSIDER_HOME:-10}
+CONSIDER_HOME=${CONSIDER_HOME:-60}
+SCAN_INTERVAL=${SCAN_INTERVAL:-12}
 MQTT_IP=${MQTT_IP:-127.0.0.1}
 MQTT_PORT=${MQTT_PORT:-1883}
 MQTT_HA_TOPIC_PREFIX=${MQTT_HA_TOPIC_PREFIX:-homeassistant}
@@ -36,6 +37,7 @@ MQTT_LWT_config()
         send_discovery "$NAME" "$PRETTYNAME"
       fi
     done
+    # Allow cooldown
     sleep 1
   done
 }
@@ -54,7 +56,7 @@ track_iphone()
   # Send config message on Birth and Last Will and Testaments in the background
   MQTT_LWT_config "$NAME" "$PRETTYNAME" &
 
-  while true; do sleep 12
+  while true; do
     # IP
     hping3 -2 -c 3 -p 5353 "$IP" -q >/dev/null 2>&1
     if ip neigh show | grep REACHABLE | grep -q "$IP "; then
@@ -64,12 +66,14 @@ track_iphone()
         if [ $guest_lastseen -ge "$CONSIDER_HOME" ]; then
             guest_status='not_home'
         else
-            guest_lastseen=$((guest_lastseen+1))
+            guest_lastseen=$((guest_lastseen+SCAN_INTERVAL))
         fi
     fi
     mosquitto_pub -h "$MQTT_IP" -p "$MQTT_PORT" -u "$MQTT_USER" -P "$MQTT_PASSWORD" \
      -t "${MQTT_HA_TOPIC_PREFIX}/device_tracker/${NAME}/state" \
      -m "$guest_status"
+
+    sleep ${SCAN_INTERVAL}
   done
   exit 1
 }
@@ -116,6 +120,11 @@ while [ $# -gt 1 ]; do
       ;;
     -h|--home)
       CONSIDER_HOME="$2"
+      shift # past argument
+      shift
+      ;;
+    -s|--scan-interval)
+      SCAN_INTERVAL="$2"
       shift # past argument
       shift
       ;;
