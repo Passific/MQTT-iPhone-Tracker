@@ -14,10 +14,11 @@ Uses docker manifest for multi-platform awareness.
 List of supported architectures:
 | Architecture | Available |
 | :---: | :---: |
+| 386 | :white_check_mark: |
 | amd64 | :white_check_mark: |
 | arm/v6 | :white_check_mark: |
 | arm/v7 | :white_check_mark: |
-| arm64 | :white_check_mark: |
+| arm64/v8 | :white_check_mark: |
 
 ## Usage
 
