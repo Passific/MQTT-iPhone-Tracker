@@ -37,6 +37,8 @@ If both are specified, command parameters will be used.
 | `MQTT_LWT_TOPIC` | `MQTT_HA_TOPIC_PREFIX`/status | Home Assistant's topic for MQTT Birth and Last Will and Testament (LWT) |
 | `CONSIDER_HOME` | 60 | Seconds to wait till marking someone as not home after not being seen. |
 | `SCAN_INTERVAL` | 12 | Scan time. Must be shorter than ARP cache persistence, or the device will be marked not_home. |
+| `PING_PORT` | 5353 | Port used to ping the device. |
+| `PING_MODE` | udp | Mode used by hping. Only `udp` and `tcp` are supported for now. |
 
 ### Command parameters
 | Command | Description | Example |
@@ -49,6 +51,8 @@ If both are specified, command parameters will be used.
 | `-b`<br>`--mqtt-lwt-topic` | Home Assistant's topic for MQTT Birth and Last Will and Testament (LWT) | `-b homeassistant/status` |
 | `-h`<br>`--home` | Seconds to wait till marking someone as not home after not being seen. | `-h 60` |
 | `-s`<br>`--scan-interval` | Scan time. Must be shorter than ARP cache persistence, or the device will be marked not_home. | `-s 12` |
+| `-l`<br>`--ping-port` | Port used to ping the device. | `-l 5353` |
+| `-m`<br>`--ping-mode` | Mode used by hping. Only `udp` and `tcp` are supported for now. | `-m udp` |
 | `-t`<br>`--target` | Device name of the device followed by it's IP. __MUST be the last parameter!__ | `-t "192.168.1.104" "iPhone 1"` |
 
 ### Docker compose example:

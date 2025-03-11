@@ -8,6 +8,8 @@ MQTT_IP=${MQTT_IP:-127.0.0.1}
 MQTT_PORT=${MQTT_PORT:-1883}
 MQTT_HA_TOPIC_PREFIX=${MQTT_HA_TOPIC_PREFIX:-homeassistant}
 MQTT_LWT_TOPIC=${MQTT_LWT_TOPIC:-${MQTT_HA_TOPIC_PREFIX}/status}
+PING_PORT=${PING_PORT:-5353}
+PING_MODE=${PING_MODE:-udp}
 
 send_discovery()
 {
@@ -56,9 +58,12 @@ track_iphone()
   # Send config message on Birth and Last Will and Testaments in the background
   MQTT_LWT_config "$NAME" "$PRETTYNAME" &
 
+  PING_extra_param=""
+  [ "udp" = "$PING_MODE" ] && PING_extra_param="-2"
+
   while true; do
     # IP
-    hping3 -2 -c 3 -p 5353 "$IP" -q >/dev/null 2>&1
+    hping3 "${PING_extra_param}" -c 3 -p "${PING_PORT}" "$IP" -q >/dev/null 2>&1
     if ip neigh show | grep REACHABLE | grep -q "$IP "; then
         guest_status='home'
         guest_lastseen=0
@@ -125,6 +130,16 @@ while [ $# -gt 1 ]; do
       ;;
     -s|--scan-interval)
       SCAN_INTERVAL="$2"
+      shift # past argument
+      shift
+      ;;
+    -l|--ping-port)
+      PING_PORT="$2"
+      shift # past argument
+      shift
+      ;;
+    -m|--ping-mode)
+      PING_MODE="$2"
       shift # past argument
       shift
       ;;
