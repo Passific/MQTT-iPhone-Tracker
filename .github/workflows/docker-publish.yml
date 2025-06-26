@@ -2,7 +2,9 @@ name: Docker-build-n-push
 
 on:
   push:
-#    tags: [ 'v*.*.*' ]
+   # In case branches are also ignored
+   # branches:
+   #   - "**"
     tags-ignore:
       - '**'
   release:
