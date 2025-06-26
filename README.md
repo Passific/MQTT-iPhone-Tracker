@@ -1,5 +1,6 @@
 [![Docker-build-n-push](https://github.com/Passific/MQTT-iPhone-Tracker/actions/workflows/docker-publish.yml/badge.svg)](https://github.com/Passific/MQTT-iPhone-Tracker/actions/workflows/docker-publish.yml)
-![GitHub release](https://img.shields.io/github/release/Passific/MQTT-iPhone-Tracker.svg)
+[![GitHub release](https://img.shields.io/github/release/Passific/MQTT-iPhone-Tracker.svg?logo=GitHub&label=Version)](https://github.com/Passific/MQTT-iPhone-Tracker/releases)
+[![Last Commit](https://img.shields.io/github/last-commit/passific/MQTT-iPhone-Tracker.svg?logo=conventionalcommits&logoColor=FFFFFF&label=Last%20Commit&color=313131)](https://github.com/Passific/MQTT-iPhone-Tracker/commits)
 
 # MQTT iPhone-Tracker for HA
 Track iPhones, or any device using [Bonjour](https://en.wikipedia.org/wiki/Bonjour_(software)) protocol, on the local network for Home Assistant.
