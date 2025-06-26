@@ -9,15 +9,6 @@ on:
 jobs:
   build-and-push-image:
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        platform:
-          - linux/386
-          - linux/amd64
-          - linux/arm/v6
-          - linux/arm/v7
-          - linux/arm64/v8
     permissions:
       packages: write
     steps:
@@ -40,7 +31,7 @@ jobs:
         with:
           context: .
           push: true
-          platforms: ${{ matrix.platforms }}
+          platforms: linux/amd64, linux/arm/v6, linux/arm/v7, linux/arm64
           tags: ghcr.io/${{ env.REPO }}:${{ github.ref_name }},ghcr.io/${{ env.REPO }}:latest-dev${{ github.event.action == 'released' && format(',ghcr.io/{0}:latest', env.REPO) || '' }}
           build-args: |
             BUILD_DATE=${{ github.event.repository.updated_at }}
