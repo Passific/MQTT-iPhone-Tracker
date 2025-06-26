@@ -3,6 +3,8 @@ name: Docker-build-n-push
 on:
   push:
 #    tags: [ 'v*.*.*' ]
+    tags-ignore:
+      - '**'
   release:
     types: [released, prereleased]
 
