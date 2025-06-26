@@ -1,7 +1,7 @@
 name: Docker-build-n-push
 
 on:
-#  push:
+  push:
 #    tags: [ 'v*.*.*' ]
   release:
     types: [released, prereleased]
@@ -30,7 +30,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: .
-          push: true
+          push: ${{ github.event.action == 'released' || github.event.action == 'prereleased' }}
           platforms: linux/amd64, linux/arm/v6, linux/arm/v7, linux/arm64
           tags: ghcr.io/${{ env.REPO }}:${{ github.ref_name }},ghcr.io/${{ env.REPO }}:latest-dev${{ github.event.action == 'released' && format(',ghcr.io/{0}:latest', env.REPO) || '' }}
           build-args: |
